@@ -1,0 +1,26 @@
+﻿* {
+    font-family: sans-serif;
+}
+body {
+    background: var(--neutral-layer-1);
+    color: var(--neutral-foreground-rest);
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 48px !important;
+}
+a {
+    color: var(--accent-foreground-rest);
+}
+
+@media only screen and (max-width: 650px) {
+    .right-align {
+        justify-content: center !important;
+    }
+    .right-align > * {
+        width: 100% !important;
+    }
+}

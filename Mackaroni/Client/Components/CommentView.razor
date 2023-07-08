@@ -1,0 +1,42 @@
+﻿@using Mackaroni.Shared
+@inject ITimeOffsetProvider OffsetProvider;
+<div class="container">
+    <FluentCard>
+        <div class="inner">
+            <div class="avatar-stack">
+                <img src="/blank.jpg" alt="" />
+                <span>@DisplayComment.Author</span>
+            </div>
+            <div class="text-stack">
+                <p>
+                    @DisplayComment.Text
+                </p>
+                <div class="time-display-bar">
+                    <span>
+                        @(_convertedTime.ToString("MM/dd/yyyy h:mm tt"))
+                    </span>
+                </div>
+            </div>
+        </div>
+    </FluentCard>
+</div>
+@code {
+    [Parameter]
+    public Comment DisplayComment { get; set; }
+    private TimeSpan? _userTimeOffset;
+
+    private DateTimeOffset _convertedTime;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (_userTimeOffset == null)
+        {
+            int timeDiffer = await OffsetProvider.GetOffsetMinutes();
+            _userTimeOffset = TimeSpan.FromMinutes(-timeDiffer);
+        }
+        
+        _convertedTime = DisplayComment.PostedTime.ToOffset(_userTimeOffset.Value);
+    }
+
+    
+}

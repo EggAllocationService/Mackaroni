@@ -1,0 +1,93 @@
+﻿@using Mackaroni.Shared
+@using Microsoft.AspNetCore.SignalR.Client
+@inject ISideDetector SideDetector
+@inject ICommentThreadProvider CommentProvider
+@inject PersistentComponentState ApplicationState
+@inject HttpClient Client
+@inject NavigationManager Navigation
+
+<FluentCard>
+    <div class="container">
+        <div class="head">
+            <h2>Comments</h2>
+            <FluentTextField @bind-Value="AuthorName" Appearance="FluentInputAppearance.Filled" Placeholder="Display Name" Required="true"></FluentTextField>
+            <FluentTextArea @bind-Value="NewCommentString" Appearance="FluentInputAppearance.Filled" Placeholder="Write a comment..." Style="width: 100%" Required="true"></FluentTextArea>
+            <div class="right-align">
+                <FluentButton Appearance="Appearance.Accent" @onclick="PostNewComment">Submit</FluentButton>
+            </div>
+            <FluentDivider Style="width: 100%; margin-top: 8px"></FluentDivider>
+        </div>
+        <div class="comments">
+            @foreach (var comment in _comments)
+            {
+                <CommentView DisplayComment="@comment" @key="comment"></CommentView>
+            }
+        </div>
+    </div>
+</FluentCard>
+
+@code {
+    [Parameter]
+    public string PageId { get; set; }
+
+    List<Comment>? _comments;
+
+    HubConnection? _hubConnection;
+
+    string NewCommentString = "";
+    string AuthorName = "";
+
+    PersistingComponentStateSubscription _subscription;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _subscription = ApplicationState.RegisterOnPersisting(Persist);
+        
+        if (!ApplicationState.TryTakeFromJson<List<Comment>>("comments", out var persistedComments))
+        {
+            _comments = await CommentProvider.GetCommentsForPage(PageId);
+        }
+        else
+        {
+            _comments = persistedComments;
+        }
+
+        if (!SideDetector.IsServerSide())
+        {
+            _hubConnection = new HubConnectionBuilder()
+                .WithUrl(Navigation.ToAbsoluteUri("/api/commentNotifications"))
+                .Build();
+            _hubConnection.On<Comment>("CommentAdded", (c) =>
+            {
+                _comments.Add(c);
+                _comments = _comments.OrderByDescending(p => p.PostedTime).ToList();
+                StateHasChanged();
+            });
+            await _hubConnection.StartAsync();
+            await _hubConnection.SendAsync("AddToGroup", PageId);
+        }
+    }
+    async void PostNewComment()
+    {
+        if (AuthorName.Length <= 1 || NewCommentString.Length <= 2)
+        {
+            return;
+        }
+        var req = new CreateCommentRequest()
+        {
+            Text = NewCommentString,
+            Author = AuthorName
+        };
+        var response = await Client.PostAsJsonAsync("/api/comments/" + PageId, req);
+        NewCommentString = "";
+        AuthorName = "";
+        StateHasChanged();
+    }
+    
+    Task Persist()
+    {
+        ApplicationState.PersistAsJson("comments", _comments);
+        return Task.CompletedTask;
+    }
+    
+}

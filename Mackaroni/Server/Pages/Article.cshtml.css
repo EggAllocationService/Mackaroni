@@ -1,0 +1,9 @@
+﻿article {
+    max-width: 50%;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+#comment-container {
+    width: 500px;
+    max-width: 80%;
+}

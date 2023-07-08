@@ -1,0 +1,35 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["title"]</title>
+    <base href="/" />
+    <link href="Mackaroni.Server.styles.css" rel="stylesheet" />
+    <link href="Mackaroni.Client.styles.css" rel="stylesheet" />
+    <link href="shared.css" rel="stylesheet" />
+    <link href="_content/Microsoft.Fast.Components.FluentUI/css/variables.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    @await RenderSectionAsync("head", required:false)
+</head>
+
+<body>
+    @RenderBody()
+<script type="module">
+    import { baseLayerLuminance, accentBaseColor, provideFluentDesignSystem } from './_content/Microsoft.Fast.Components.FluentUI/js/web-components.min.js';
+    baseLayerLuminance.withDefault(0.2);
+    window.designTokens = {
+        baseLayerLuminance,
+        accentBaseColor
+    }
+    window.provideFluentDesignSystem = provideFluentDesignSystem;
+    
+</script>
+@await RenderSectionAsync("scripts", required: false)
+<persist-component-state />
+
+<script src="/util.js"></script>
+</body>
+
+</html>

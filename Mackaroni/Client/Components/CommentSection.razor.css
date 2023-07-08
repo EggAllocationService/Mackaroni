@@ -1,0 +1,27 @@
+﻿.container {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+    align-content: center;
+}
+.container > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+
+.head {
+    align-content: flex-start !important;
+    justify-content: flex-start !important;
+    padding: 12px;
+    gap: 8px;
+}
+.right-align {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}

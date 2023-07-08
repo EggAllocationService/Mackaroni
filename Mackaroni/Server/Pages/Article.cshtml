@@ -1,0 +1,34 @@
+﻿@page "/article/{name}"
+@using System.Globalization
+@model Mackaroni.Server.Pages.Article
+
+@{
+    Layout = "_Shared/_Layout";
+}
+
+<h1>@(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Model.ArticleName.Replace("-", " ")))</h1>
+<article>
+    <p>
+    Elit, elementum facilisi a nibh pretium magnis. Ac phasellus lobortis tristique tempus velit hac dis. Molestie neque bibendum torquent sociis platea tortor feugiat tristique cras quis ipsum. Tristique mus interdum nisi tellus porttitor habitant. Tincidunt taciti fermentum potenti! Purus hendrerit est urna, taciti elementum nulla suspendisse justo! Mollis vulputate ad natoque. Tempus ullamcorper eget euismod cubilia aliquet. Dignissim hac dui purus mi ante.
+    </p>
+    <p>
+    Magnis ornare sociosqu purus, habitant est dictumst ipsum ac scelerisque natoque mi. Ipsum leo interdum fusce porta nam aliquet pulvinar cras ligula nisi laoreet. Blandit nullam sit justo tortor. Elementum ligula elementum pretium parturient cras pulvinar adipiscing! Tempor in torquent at ridiculus torquent tristique semper fermentum nostra sollicitudin gravida consequat. Auctor class morbi nulla sed eget et. Augue sagittis elit conubia neque vulputate.
+    </p>
+    <p>
+    Aliquet eleifend mi vitae nostra semper torquent egestas sodales imperdiet purus fusce donec. Tellus ullamcorper nisl mi nec at. Mattis odio platea ante. Turpis varius sit faucibus elementum consequat parturient est id lectus. Sapien eleifend interdum fusce. Taciti quisque sem augue ipsum sagittis enim rhoncus imperdiet suscipit tellus massa dictumst. Curae; ornare lacus aenean blandit luctus dis commodo et. Mollis montes in consectetur aenean vitae elit fringilla commodo gravida metus elit. Vulputate tempor magna dapibus nulla sociis mattis eget.
+    </p>
+    <p>
+    Iaculis elementum eu odio amet gravida imperdiet facilisis consequat. Tellus sit iaculis netus hac. Non facilisis nulla accumsan amet per pharetra. Malesuada facilisis cubilia, ac augue erat eleifend senectus nibh scelerisque eu vitae. Amet ut, montes potenti. Mus malesuada tellus gravida ultricies. Nostra ullamcorper suspendisse enim sollicitudin congue aliquet tempor commodo dolor pretium. Posuere ligula tristique porttitor urna enim parturient orci maecenas non porttitor. Sapien elementum quam himenaeos, tellus montes suspendisse laoreet nascetur rutrum! Montes sociosqu et dictumst dis.
+    </p>
+    <p>
+    Fames nunc netus inceptos vel fusce nibh dui mollis, semper justo fusce. Nam porttitor pharetra a justo facilisi porttitor pharetra aenean aptent ad tempor. Risus convallis eget himenaeos nam fermentum montes erat vel risus nibh tortor justo. Eget proin et torquent dictum luctus vehicula ac vulputate ultrices. Dictum erat sed per mattis ultricies nunc accumsan. Luctus tempor tincidunt lobortis eros. Dolor torquent placerat magnis dolor nostra tempor purus at nascetur potenti! Cras id porta per amet dolor augue. Netus habitant etiam ante tempus sit vestibulum in pellentesque curabitur. Tristique commodo mattis fermentum laoreet posuere urna nec orci mollis euismod.
+    </p>
+</article>
+<div id="comment-container">
+    <component type="typeof(CommentSection)" render-mode="WebAssemblyPrerendered" param-PageId="@(Model.ArticleName)"  />
+</div>
+@section scripts
+{
+    <script src="_framework/blazor.webassembly.js"></script>
+    
+}
